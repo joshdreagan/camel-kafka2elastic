@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import javax.net.ssl.SSLContext;
 import org.apache.camel.CamelContext;
+import org.apache.camel.util.jsse.KeyManagersParameters;
 import org.apache.camel.util.jsse.KeyStoreParameters;
 import org.apache.camel.util.jsse.SSLContextParameters;
 import org.apache.camel.util.jsse.TrustManagersParameters;
@@ -43,6 +44,23 @@ public class SslConfiguration {
     TrustManagersParameters trustManagers = new TrustManagersParameters();
     trustManagers.setKeyStore(trustStore);
     return trustManagers;
+  }
+  
+  @Bean
+  KeyStoreParameters keyStore(SslProperties sslProperties, CamelContext camelContext) {
+    KeyStoreParameters keyStore = new KeyStoreParameters();
+    keyStore.setCamelContext(camelContext);
+    keyStore.setResource(sslProperties.getKeystorePath());
+    keyStore.setPassword(sslProperties.getKeystorePassword());
+    return keyStore;
+  }
+  
+  @Bean
+  KeyManagersParameters keyManagers(SslProperties sslProperties, KeyStoreParameters keyStore) {
+    KeyManagersParameters keyManagers = new KeyManagersParameters();
+    keyManagers.setKeyStore(keyStore);
+    keyManagers.setKeyPassword(sslProperties.getKeyPassword());
+    return keyManagers;
   }
   
   @Bean

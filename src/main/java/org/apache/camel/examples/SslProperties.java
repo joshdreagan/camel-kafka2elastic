@@ -27,6 +27,7 @@ public class SslProperties {
   private String truststorePassword;
   private String keystorePath;
   private String keystorePassword;
+  private String keyPassword;
 
   public String getTruststorePath() {
     return truststorePath;
@@ -58,5 +59,13 @@ public class SslProperties {
 
   public void setKeystorePassword(String keystorePassword) {
     this.keystorePassword = keystorePassword;
+  }
+
+  public String getKeyPassword() {
+    return keyPassword;
+  }
+
+  public void setKeyPassword(String keyPassword) {
+    this.keyPassword = keyPassword;
   }
 }
