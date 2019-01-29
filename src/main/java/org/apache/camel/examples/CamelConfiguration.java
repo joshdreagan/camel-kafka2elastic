@@ -32,9 +32,10 @@ public class CamelConfiguration extends RouteBuilder {
   @Override
   public void configure() throws Exception {
     from("kafka:my-topic")
+      .convertBodyTo(String.class)
       .log(LoggingLevel.DEBUG, log, "Message: ${body}")
       .setHeader(ElasticsearchConstants.PARAM_OPERATION, constant(ElasticsearchOperation.Index))
-      .to("elasticsearch-rest:clusterName")
+      .to("elasticsearch-rest:clusterName?indexName=myIndexName&indexType=myIndexType")
     ;
   }
 }

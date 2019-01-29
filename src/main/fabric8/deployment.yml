@@ -7,6 +7,28 @@ spec:
         env:
         - name: SPRING_CONFIG_LOCATION
           value: file:/etc/config/
+        - name: CAMEL_COMPONENT_ELASTICSEARCH_REST_USER
+          valueFrom:
+            secretKeyRef:
+              name: ${project.artifactId}-secret
+              key: camel.component.elasticsearch-rest.user
+        - name: CAMEL_COMPONENT_ELASTICSEARCH_REST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ${project.artifactId}-secret
+              key: camel.component.elasticsearch-rest.password
+        - name: JAVAX_NET_SSL_TRUST_STORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ${project.artifactId}-secret
+              key: javax.net.ssl.trust-store-password
+        - name: JAVAX_NET_SSL_KEY_STORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: ${project.artifactId}-secret
+              key: javax.net.ssl.key-store-password
+        - name: JAVA_OPTIONS
+          value: "-Djavax.net.ssl.trustStore=/etc/secret/client.ts -Djavax.net.ssl.trustStorePassword=$JAVAX_NET_SSL_TRUST_STORE_PASSWORD -Djavax.net.ssl.keyStore=/etc/secret/client.ks -Djavax.net.ssl.keyStorePassword=$JAVAX_NET_SSL_KEY_STORE_PASSWORD"
         resources:
           requests:
             cpu: "0.5"
@@ -16,7 +38,18 @@ spec:
         - name: ${project.artifactId}-configmap-vol
           mountPath: /etc/config
           readOnly: true
+        - name: ${project.artifactId}-secret-vol
+          mountPath: /etc/secret
+          readOnly: true
       volumes:
       - name: ${project.artifactId}-configmap-vol
         configMap:
           name: ${project.artifactId}-configmap
+      - name: ${project.artifactId}-secret-vol
+        secret:
+          secretName: ${project.artifactId}-secret
+          items: 
+          - key: client.ts
+            path: client.ts
+          - key: client.ks
+            path: client.ks

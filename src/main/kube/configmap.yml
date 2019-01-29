@@ -5,3 +5,4 @@ metadata:
 data:
   application.properties: |-
     camel.component.kafka.brokers=my-cluster-kafka-bootstrap:9092
+    camel.component.elasticsearch-rest.host-addresses=localhost:9200

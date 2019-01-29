@@ -21,6 +21,8 @@ camel:
     elasticsearch-rest:
       host-addresses: localhost:9200
       enable-s-s-l: true
+      user: foo
+      password: foo
 
 # Logging
 logging:
