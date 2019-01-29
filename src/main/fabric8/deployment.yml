@@ -1,0 +1,22 @@
+spec:
+  template:
+    spec:
+      serviceAccountName: ${project.artifactId}-sa
+      containers:
+      - name: ${project.artifactId}
+        env:
+        - name: SPRING_CONFIG_LOCATION
+          value: file:/etc/config/
+        resources:
+          requests:
+            cpu: "0.5"
+          limits:
+            cpu: "4.0"
+        volumeMounts:
+        - name: ${project.artifactId}-configmap-vol
+          mountPath: /etc/config
+          readOnly: true
+      volumes:
+      - name: ${project.artifactId}-configmap-vol
+        configMap:
+          name: ${project.artifactId}-configmap

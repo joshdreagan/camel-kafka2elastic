@@ -1,0 +1,30 @@
+# Servlet Container & Health Setup
+server:
+  address: 0.0.0.0
+management:
+  address: 0.0.0.0
+  port: 8081
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+
+# Camel Spring Boot
+camel:
+  springboot:
+    name: CamelKafka2Elastic
+  component:
+    kafka:
+      brokers: "localhost:9092"
+      configuration:
+        group-id: kafka2elastic
+    elasticsearch-rest:
+      host-addresses: localhost:9200
+      enable-s-s-l: true
+
+# Logging
+logging:
+  config: classpath:logback.xml
+  level:
+    #org.apache.camel: DEBUG
+    org.apache.camel.examples: DEBUG
